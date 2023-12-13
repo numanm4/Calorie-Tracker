@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f7f7f7;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #4caf50;
+      color: white;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #output {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      text-align: left;
+    }
+
+    #output strong {
+      font-weight: bold;
+    }
+  </style>
+  <title>Calorie Tracker</title>
+</head>
+<body>
+
+  <h1>Calorie Tracker</h1>
+<!--create buttons to trigger the JS functions on the HTML page-->
+  <div>
+    <button onclick="consumedFood()">Display Consumed Food</button>
+    <button onclick="addFood()">Add Food</button>
+    <button onclick="totalCalories()">Display Total Calories</button>
+  </div>
+
+  <div id="output"></div>
+
+  <script>
+    // create an array in order to store all the food objects
+    let foodArray = [];
+
+    // function to display the list of food items consumed and their total calories
+    function consumedFood() {
+      const output = document.getElementById("output");
+      output.innerHTML = ""; // Clear previous output
+
+      if (foodArray.length === 0) {
+        output.innerHTML = "No food items consumed yet.";
+        return;
+      }
+
+      output.innerHTML += "<strong>Consumed Food:</strong><br>";
+
+      for (let i = 0; i < foodArray.length; i++) {
+        const food = foodArray[i];
+        output.innerHTML += `${food.name}, ${food.servingSize} serving(s), ${food.caloriesPerServing} calories per serving<br>`;
+      }
+
+      output.innerHTML += `<strong>Total Calories: ${calculateTotalCalories()}</strong>`;
+    }
+
+    // function to add a new food item to the consumption log
+    function addFood() {
+      const name = prompt("Enter the name of the food:");
+      const servingSize = parseFloat(prompt("Enter the serving size:"));
+      const caloriesPerServing = parseFloat(prompt("Enter the calories per serving:"));
+
+      if (isNaN(servingSize) || isNaN(caloriesPerServing)) {
+        alert("Invalid input. Please enter numeric values for serving size and calories per serving.");
+        return;
+      }
+
+      const foodItem = {
+        name: name,
+        servingSize: servingSize,
+        caloriesPerServing: caloriesPerServing,
+      };
+
+      foodArray.push(foodItem);
+      alert(`${name} added to the consumption log.`);
+    }
+
+    // function to calculate the total calories consumed in a day
+    function calculateTotalCalories() {
+      let totalCalories = 0;
+
+      for (let i = 0; i < foodArray.length; i++) {
+        totalCalories += (foodArray[i].servingSize * foodArray[i].caloriesPerServing);
+      }
+
+      return totalCalories;
+    }
+
+    // function to display the total calories consumed
+    function totalCalories() {
+      const output = document.getElementById("output");
+      output.innerHTML = `<strong>Total Calories Consumed: ${calculateTotalCalories()}</strong>`;
+    }
+  </script>
+
+</body>
+</html>
